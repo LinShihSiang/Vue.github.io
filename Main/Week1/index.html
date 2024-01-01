@@ -5,7 +5,6 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="bootstrap-5.1.1-dist\css\bootstrap.min.css" />
     <script src="bootstrap-5.1.1-dist\js\bootstrap.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.37/vue.global.js"></script> -->
   </head>
 
   <div id="app">
@@ -24,50 +23,76 @@
               </tr>
             </thead>
             <tbody>
+              <!-- 從 products 陣列產生產品清單，唯一值(key)=id -->
               <tr v-for="item in products" :key="item.id">
                 <td width="150">{{ item.title }}</td>
                 <td width="120">{{ item.origin_price }}</td>
                 <td width="120">{{ item.price }}</td>
                 <td width="150">
-                  <span v-if="item.is_enabled >= 1" class="text-success">啟用</span>
+                  <!-- 當 is_enable >= 1 為啟用，否則顯示未啟用 -->
+                  <span v-if="item.is_enabled >= 1" class="text-success"
+                    >啟用</span
+                  >
                   <span v-else>未啟用</span>
                 </td>
                 <td width="120">
-                  <button type="button" class="btn btn-primary" @click="getProductDetail(item)">
+                  <!-- 加入點擊產品詳細事件 -->
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    @click="getProductDetail(item)"
+                  >
                     查看細節
                   </button>
                 </td>
               </tr>
             </tbody>
           </table>
+          <!-- 顯示產品種類數量 -->
           <p>目前有 <span>{{ products.length }}</span> 項產品</p>
         </div>
         <div class="col-md-6">
           <h2>單一產品細節</h2>
-          <p v-if="!productDetail.title" class="text-secondary">請選擇一個商品查看</p>
+          <!-- 當產品詳細沒資料時，提示使用者選擇產品 -->
+          <p v-if="!productDetail.title" class="text-secondary">
+            請選擇一個商品查看
+          </p>
 
+          <!-- 當使用者選擇產品時，顯示產品詳細 -->
           <template v-else>
             <div class="card mb-3">
-              <img :src="productDetail.imageUrl" class="card-img-top primary-image" alt="主圖" />
+              <!-- 依序顯示產品詳細、圖片來源 -->
+              <img
+                :src="productDetail.imageUrl"
+                class="card-img-top primary-image"
+                alt="主圖"
+              />
               <div class="card-body">
                 <h5 class="card-title">
                   {{ productDetail.title }}
-                  <span class="badge bg-primary ms-2">{{ productDetail.category }}</span>
+                  <span class="badge bg-primary ms-2"
+                    >{{ productDetail.category }}</span
+                  >
                 </h5>
-                <p class="card-text">商品描述：{{ productDetail.description }}</p>
+                <p class="card-text">
+                  商品描述：{{ productDetail.description }}
+                </p>
                 <p class="card-text">商品內容：{{ productDetail.content }}</p>
                 <div class="d-flex">
                   <p class="card-text me-2">{{ productDetail.price }}</p>
-                  <p class="card-text text-secondary"><del>{{ productDetail.origin_price }}</del></p>
+                  <p class="card-text text-secondary">
+                    <del>{{ productDetail.origin_price }}</del>
+                  </p>
                   元 / {{ productDetail.unit }}
                 </div>
               </div>
             </div>
+
+            <!-- 顯示該產品更多張圖片，唯一值(key)=圖片網址 -->
             <template v-for="item in productDetail.imagesUrl" :key="item">
               <img :src="item" alt="" class="images m-2" />
             </template>
           </template>
-          
         </div>
       </div>
     </div>
@@ -95,8 +120,9 @@
     createApp({
       data() {
         return {
-          productDetail: {},
+          productDetail: {}, // 暫存圖片詳細
           products: [
+            // 產品清單
             {
               category: "甜甜圈",
               content: "尺寸：14x14cm",
@@ -155,11 +181,13 @@
           ],
         };
       },
-      methods:{
-        getProductDetail(item){
-            this.productDetail = item;
-        }
-      }
+      methods: {
+        // 觸發事件:取得產品詳細
+        getProductDetail(item) {
+          // 將選擇的產品詳細賦予暫存物件
+          this.productDetail = item;
+        },
+      },
     }).mount("#app");
   </script>
 </html>
