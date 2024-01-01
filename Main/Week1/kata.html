@@ -1,32 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <ul></ul>
+    </div>
+    <input type="text" id="inputByAdd" />
+    <button type="button" id="buttonByAdd">新增</button>
+    <script>
+      // 資料
+      const data = [
+        {
+          id: 1,
+          content: "我是卡斯伯",
+        },
+        {
+          id: 2,
+          content: "我是小明",
+        },
+      ];
 
-  <div id="app">
-    <ul></ul>
-  </div>
-  <input type="text" id="inputByAdd">
-  <button type="button" id="buttonByAdd">新增</button>
-  <script>
-    // 資料
-    const data = [
-      {
-        id: 1,
-        content: '我是卡斯伯'
-      },
-      {
-        id: 2,
-        content: '我是小明'
+      let buttonByAdd = document.querySelector("#buttonByAdd");
+      let inputByAdd = document.querySelector("#inputByAdd");
+
+      buttonByAdd.addEventListener("click", function () {
+        addItem(inputByAdd.value);
+      });
+
+      let app = document.querySelector("#app ul");
+
+      function render() {
+        let template = "";
+
+        data.forEach((item, index) => {
+          template =
+            template +
+            `<li>
+                ${item.content}
+                <button type="button" class="btnRemove" data-id="${item.id}">刪除</button>
+            </li>`;
+        });
+
+        app.innerHTML = template;
+
+        let btnsRemove = document.querySelectorAll(".btnRemove");
+
+        btnsRemove.forEach(item => {
+            item.addEventListener("click", function(e){
+                removeItem(parseInt(e.target.dataset.id));
+            })
+        })
       }
-    ];
 
-    
-  </script>
-</body>
+      let index = data.length;
+
+      function addItem(content) {
+        data.push({
+          id: index + 1,
+          content: content,
+        });
+
+        index++;
+
+        render();
+      }
+
+      function removeItem(id) {
+        var removeIndex = data.findIndex((item) => item.id == id);
+
+        data.splice(removeIndex, 1);
+
+        render();
+      }
+
+      render();
+    </script>
+  </body>
 </html>
