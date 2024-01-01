@@ -63,7 +63,7 @@
                 </div>
               </div>
             </div>
-            <template v-for="item in productDetail.imagesUrl">
+            <template v-for="item in productDetail.imagesUrl" :key="item">
               <img :src="item" alt="" class="images m-2" />
             </template>
           </template>
