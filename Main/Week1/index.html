@@ -23,7 +23,7 @@
               </tr>
             </thead>
             <tbody>
-              <!-- 從 products 陣列產生產品清單，唯一值(key)=id -->
+              <!-- 從 products 產生產品清單，唯一值(key)=id -->
               <tr v-for="item in products" :key="item.id">
                 <td width="150">{{ item.title }}</td>
                 <td width="120">{{ item.origin_price }}</td>
@@ -120,7 +120,7 @@
     createApp({
       data() {
         return {
-          productDetail: {}, // 暫存圖片詳細
+          productDetail: {}, // 暫存產品詳細
           products: [
             // 產品清單
             {
