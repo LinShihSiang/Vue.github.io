@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>蜂蜜產品</title>
+    <meta charset="UTF-8" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+  </head>
+
+  <div id="app">
+    <div class="container">
+      <div class="row py-3">
+        <div class="col-md-6">
+          <h2>產品列表</h2>
+          <table class="table table-hover mt-4">
+            <thead>
+              <tr>
+                <th width="150">產品名稱</th>
+                <th width="120">原價</th>
+                <th width="120">售價</th>
+                <th width="150">是否啟用</th>
+                <th width="120">查看細節</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- 從 products 產生產品清單，唯一值(key)=id -->
+              <tr v-for="item in products" :key="item.id">
+                <td width="150">{{ item.title }}</td>
+                <td width="120">{{ item.origin_price }}</td>
+                <td width="120">{{ item.price }}</td>
+                <td width="150">
+                  <!-- 當 is_enable >= 1 為啟用，否則顯示未啟用 -->
+                  <span v-if="item.is_enabled >= 1" class="text-success"
+                    >啟用</span
+                  >
+                  <span v-else>未啟用</span>
+                </td>
+                <td width="120">
+                  <!-- 加入點擊產品詳細事件 -->
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    @click="getProductDetail(item)"
+                  >
+                    查看細節
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- 顯示產品種類數量 -->
+          <p>目前有 <span v-text="products.length"></span> 項產品</p>
+        </div>
+        <div class="col-md-6">
+          <h2>單一產品細節</h2>
+          <!-- 當產品詳細沒資料時，提示使用者選擇產品 -->
+          <p v-if="!productDetail.title" class="text-secondary">
+            請選擇一個商品查看
+          </p>
+
+          <!-- 當使用者選擇產品時，顯示產品詳細 -->
+          <template v-else>
+            <div class="card mb-3">
+              <!-- 依序顯示產品詳細、圖片來源 -->
+              <img
+                :src="productDetail.imageUrl"
+                class="card-img-top primary-image"
+                alt="主圖"
+              />
+              <div class="card-body">
+                <h5 class="card-title">
+                  {{ productDetail.title }}
+                  <span class="badge bg-primary ms-2"
+                    >{{ productDetail.category }}</span
+                  >
+                </h5>
+                <p class="card-text">
+                  商品描述：{{ productDetail.description }}
+                </p>
+                <p class="card-text">商品內容：{{ productDetail.content }}</p>
+                <div class="d-flex">
+                  <p class="card-text me-2">{{ productDetail.price }}</p>
+                  <p class="card-text text-secondary">
+                    <del>{{ productDetail.origin_price }}</del>
+                  </p>
+                  元 / {{ productDetail.unit }}
+                </div>
+              </div>
+            </div>
+
+            <!-- 顯示該產品更多張圖片，唯一值(key)=圖片網址 -->
+            <template v-for="item in productDetail.imagesUrl" :key="item">
+              <img :src="item" alt="" class="images m-2" />
+            </template>
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    img {
+      object-fit: contain;
+      max-width: 100%;
+    }
+
+    .primary-image {
+      height: 300px;
+    }
+
+    .images {
+      height: 150px;
+    }
+  </style>
+
+  <script type="module">
+    // 產品資料格式
+    import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
+
+    const url = "https://ec-course-api.hexschool.io/v2/";
+    const path = "mikelin-hexschool";
+    const token = document.cookie.replace(
+      /(?:(?:^|.*;\s*)hextoken\s*\=\s*([^;]*).*$)|^.*$/,
+      "$1"
+    );
+
+    axios.defaults.headers.common["Authorization"] = token;
+
+    createApp({
+      data() {
+        return {
+          productDetail: {}, // 暫存產品詳細
+          products: [],
+        };
+      },
+      mounted() {
+        // 驗證帳號是否登入
+        axios
+          .post(`${url}/api/user/check`)
+          .then((response) => {
+            // 登入狀態才取得產品資料
+            this.getProducts();
+          })
+          .catch((error) => {
+            // 非登入狀態提示後轉回登入頁
+            alert(error.response.data.message);
+
+            window.location.href = `LoginIn.html`;
+          });
+      },
+      methods: {
+        // 觸發事件:取得全部產品
+        getProducts() {
+          axios
+            .get(`${url}/api/${path}/admin/products/all`)
+            .then(response => {
+              // 空資料時不處理
+              if(response.data.products == null) return;
+
+              this.products = Object.values(response.data.products);
+            })
+            .catch(error => {
+              console.dir(error);
+            });
+        },
+        // 觸發事件:取得產品詳細
+        getProductDetail(item) {
+          // 將選擇的產品詳細賦予暫存物件
+          this.productDetail = item;
+        },
+      },
+    }).mount("#app");
+  </script>
+</html>
