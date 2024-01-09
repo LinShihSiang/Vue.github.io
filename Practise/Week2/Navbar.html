@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login In</title>
+    <meta charset="UTF-8" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+  </head>
+
+  <style>
+    .color-ig {
+      background: linear-gradient(to bottom left, #9b37ba, #fed16e);
+      background: -webkit-linear-gradient(to bottom left, #9b37ba, #fed16e);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+  </style>
+
+  <div class="container-fluid bg-light">
+    <div class="row align-middle">
+      <div class="col">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <div class="container-fluid">
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNavDropdown"
+              aria-controls="navbarNavDropdown"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="#">蜂蜜產品</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">蜂蜜知識+</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <div class="col text-center">
+        <a class="nav-link" href="#">
+          <img
+            src="https://storage.googleapis.com/vue-course-api.appspot.com/mikelin-hexschool/1704824924154.png?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=qwt9ckKeYpsRrZKuQS62FFVuBgRDkHREiNkLvIBkOp1V3yvo8IFsOPFeMJ%2FL97JS7%2FY2OBu8NmS9rpiIj5PVLFAdqj154vlX5yxAOoCG8hacfXOe6TuV7reiwkIUdqSh1wMmlwnVjPNgYyn0BmQl9Hz5mRDKqUyuL0Qvr%2FUeLyRMrXbVY3q3kYZSrNxWmH5JesK%2FCdW4XoxYjNgkrAWc84OGu1gk9D%2BAub4caRXH2yMh9oUh9QzeKzZzSSpB2bLKh4yD1eggSv%2FHw3DAwmJPwGjqA8DtQbnyjCvviMLi2i7%2FTr9fZUfB7xSwkEsO741ou5HVK%2FqGg8cNNXPdEbGenQ%3D%3D"
+            width="75"
+            height="75"
+          />
+        </a>
+      </div>
+
+      <div class="col">
+        <ul class="list-group list-group-horizontal d-flex justify-content-end">
+          <li class="list-group-item border-0 d-none px-1 pb-0 bg-light">
+            <input
+              class="form-control"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+          </li>
+          <li
+            class="list-group-item border-0 d-none d-lg-block px-1 pb-0 bg-light"
+          >
+            <button type="button" class="btn btn-primary">Search</button>
+          </li>
+          <li class="list-group-item border-0 px-1 pb-0 bg-light">
+            <button type="button" class="btn btn-primary">Shopping</button>
+          </li>
+          <li
+            class="list-group-item border-0 d-none d-lg-block px-1 pb-0 bg-light"
+          >
+            <button type="button" class="btn btn-primary">Member</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div></div>
+
+  <footer>
+    <div class="container-fluid bg-light">
+      <div class="row">
+        <div class="col">
+          <img
+            src="https://storage.googleapis.com/vue-course-api.appspot.com/mikelin-hexschool/1704824924154.png?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=qwt9ckKeYpsRrZKuQS62FFVuBgRDkHREiNkLvIBkOp1V3yvo8IFsOPFeMJ%2FL97JS7%2FY2OBu8NmS9rpiIj5PVLFAdqj154vlX5yxAOoCG8hacfXOe6TuV7reiwkIUdqSh1wMmlwnVjPNgYyn0BmQl9Hz5mRDKqUyuL0Qvr%2FUeLyRMrXbVY3q3kYZSrNxWmH5JesK%2FCdW4XoxYjNgkrAWc84OGu1gk9D%2BAub4caRXH2yMh9oUh9QzeKzZzSSpB2bLKh4yD1eggSv%2FHw3DAwmJPwGjqA8DtQbnyjCvviMLi2i7%2FTr9fZUfB7xSwkEsO741ou5HVK%2FqGg8cNNXPdEbGenQ%3D%3D"
+            width="150"
+            height="150"
+          />
+        </div>
+        <div class="col">
+          <p class="h5 fw-bolder">Company</p>
+          <ul class="list-group">
+            <li class="list-group-item border-0 bg-light ps-0">
+              <a href="#">蜂蜜產品</a>
+            </li>
+            <li class="list-group-item border-0 bg-light ps-0">
+              <a href="#">蜂蜜知識+</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col">
+          <p class="h5 fw-bolder">Customer</p>
+          <ul class="list-group">
+            <li class="list-group-item border-0 bg-light ps-0">
+              <a href="#">會員中心</a>
+            </li>
+            <li class="list-group-item border-0 bg-light ps-0">
+              <a href="#">會員條款</a>
+            </li>
+            <li class="list-group-item border-0 bg-light ps-0">
+              <a href="#">購物需知</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-3">
+          <p class="h5 fw-bolder">Contact Us</p>
+          <p>地址: 326桃園市楊梅區永平路191號</p>
+          <p>電話: 0955 259 888</p>
+          <p>營業時間: 每周一至周五 09:00 - 18:00</p>
+          <p>信箱: kennken0@gmail.com</p>
+          <ul class="list-group list-group-horizontal">
+            <li class="list-group-item border-0 bg-light ps-0">
+              <button type="button" class="border-0 bg-light">
+                <i class="bi bi-facebook fs-4 text-primary"></i>
+              </button>
+            </li>
+            <li class="list-group-item border-0 bg-light ps-0">
+              <button type="button" class="border-0 bg-light">
+                <i class="bi bi-instagram fs-4 color-ig"></i>
+              </button>
+            </li>
+            <li class="list-group-item border-0 bg-light ps-0">
+              <button type="button" class="border-0 bg-light">
+                <i class="bi bi-youtube fs-4 text-danger"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div class="col">
+          <img
+            src="https://storage.googleapis.com/vue-course-api.appspot.com/mikelin-hexschool/1704820123187.png?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=BHux%2BSpr3oIHC9ZTsjH07jpihdHRjYOBrmWi7Nk2TmBARa9VHjSWvRThUhEPFHYLjWjctPdRlx3ocgU4ZXnK9MywLxnqXhqBTuGwmJ4euWat7q8JBLmoEGdBmI7XqSYZ0tpKAz75xetrxFiLC2QA08GMmq7VpbWbcGk7j%2FuBWMuMMkCaGxxxTsLki4u9WZa64NNILTHibX7Gm3sbpASNzEWJSJ%2FZeBg564xjhZ6q4la4DDTHft%2BXvqT1ba1XXjQETFsB0Ef5SFRBbOuoOd%2B1zml%2BWQwQQt0tZH8ePD5XIy0X%2BJzNFjVDZ9dxXq9b1VLQkymaGn82HTYVnIWUfhzA7w%3D%3D"
+            width="250"
+            height="250"
+          />
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
+
+    const url = "https://ec-course-api.hexschool.io/v2/";
+    const path = "mikelin-hexschool";
+  </script>
+</html>
