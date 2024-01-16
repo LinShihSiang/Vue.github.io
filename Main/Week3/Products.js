@@ -7,9 +7,9 @@ const token = document.cookie.replace(
   /(?:(?:^|.*;\s*)hextoken\s*\=\s*([^;]*).*$)|^.*$/,
   "$1"
 );
-let deleteProductModal = null;
-let addProductModal = null;
+let deleteModal = null;
 let productModal = null;
+let detailModal = null;
 
 axios.defaults.headers.common["Authorization"] = token;
 
@@ -18,43 +18,35 @@ createApp({
     return {
       productDetail: {}, // 暫存產品詳細
       products: [],
-      newProduct: {},
+      editResult: {},
       newImageUrl: "",
+      is_addProduct: false,
     };
   },
   mounted() {
-    deleteProductModal = new bootstrap.Modal(
-      document.querySelector("#deleteProductModal")
-    );
-    addProductModal = new bootstrap.Modal(
-      document.querySelector("#addProductModal")
-    );
+    deleteModal = new bootstrap.Modal(document.querySelector("#deleteModal"));
     productModal = new bootstrap.Modal(document.querySelector("#productModal"));
+    detailModal = new bootstrap.Modal(document.querySelector("#detailModal"));
 
     this.checkSignIn();
   },
   methods: {
     checkSignIn() {
-      // 驗證帳號是否登入
       axios
         .post(`${url}/api/user/check`)
         .then((response) => {
-          // 登入狀態才取得產品資料
           this.getProducts();
         })
         .catch((error) => {
-          // 非登入狀態提示後轉回登入頁
           alert(error.response.data.message);
 
           window.location.href = `LoginIn.html`;
         });
     },
-    // 觸發事件:取得全部產品
     getProducts() {
       axios
         .get(`${url}/api/${path}/admin/products/all`)
         .then((response) => {
-          // 空資料時不處理
           if (response.data.products == null) {
             this.products = [];
             return;
@@ -66,55 +58,80 @@ createApp({
           console.dir(error);
         });
     },
-    // 觸發事件:取得產品詳細
     getProductDetail(item) {
-      // 將選擇的產品詳細賦予暫存物件
       this.productDetail = { ...item };
 
-      productModal.show();
+      detailModal.show();
     },
-    confirmDeleteProduct(item) {
+    deleteProduct(item) {
       this.productDetail = { ...item };
 
-      deleteProductModal.show();
+      deleteModal.show();
     },
-    deleteProduct() {
-      // call api delete
+    confirmDelete() {
       axios
         .delete(`${url}/api/${path}/admin/product/${this.productDetail.id}`)
         .then((response) => {
           this.getProducts();
 
-          deleteProductModal.hide();
+          deleteModal.hide();
         })
         .catch((error) => {
           alert(error.response.data.message);
         });
     },
-    editNewProduct() {
-      addProductModal.show();
+    editProduct(item = null) {
+      this.is_addProduct = item == null;
+
+      if (this.is_addProduct) {
+        this.editResult = {};
+      } else {
+        this.editResult = { ...item };
+      }
+
+      productModal.show();
     },
-    addNewProduct() {
+    confirmEdit() {
+      if (this.is_addProduct) {
+        this.insertProduct();
+      } else {
+        this.updateProduct();
+      }
+    },
+    insertProduct() {
       axios
         .post(`${url}/api/${path}/admin/product`, {
-          data: this.newProduct,
+          data: this.editResult,
         })
         .then((response) => {
           this.getProducts();
-          this.newProduct = {};
 
-          addProductModal.hide();
+          productModal.hide();
+        })
+        .catch((error) => {
+          alert(error.response.data.message);
+        });
+    },
+    updateProduct() {
+      axios
+        .put(`${url}/api/${path}/admin/product/${this.editResult.id}`, {
+          data: this.editResult,
+        })
+        .then((response) => {
+          this.getProducts();
+
+          productModal.hide();
         })
         .catch((error) => {
           alert(error.response.data.message);
         });
     },
     insertImageUrl() {
-      this.newProduct.imageUrl = this.newImageUrl;
+      this.editResult.imageUrl = this.newImageUrl;
       this.newImageUrl = "";
     },
     deleteImageUrl() {
-      this.newProduct.imageUrl = null;
+      this.editResult.imageUrl = null;
     },
   },
 }).mount("#app");
