@@ -5,14 +5,17 @@ const path = "mikelin-hexschool";
 
 createApp({
   data() {
-    return {};
+    return {
+      username: "",
+      password: "",
+    };
   },
   methods: {
     clickSignIn() {
       axios
         .post(`${url}/admin/signin`, {
-          username: document.querySelector("#username").value,
-          password: document.querySelector("#password").value,
+          username: this.username,
+          password: this.password,
         })
         .then((response) => {
           const { token, expired } = response.data;
@@ -24,8 +27,6 @@ createApp({
           window.location.href = `Products.html`;
         })
         .catch((error) => {
-          console.log(error.response);
-
           alert(error.response.data.error.message);
         });
     },

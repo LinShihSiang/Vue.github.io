@@ -55,7 +55,7 @@ createApp({
           this.products = Object.values(response.data.products);
         })
         .catch((error) => {
-          console.dir(error);
+          alert(error.response.data.message);
         });
     },
     getProductDetail(item) {
