@@ -38,7 +38,7 @@
             </thead>
             <tbody>
               <!-- 從 products 產生產品清單，唯一值(key)=id -->
-              <tr v-for="item in productList" :key="item.id">
+              <tr v-for="item in productsByPage" :key="item.id">
                 <td width="150">
                   <a href="#" @click="getProductDetail(item)"
                     >{{ item.title }}</a
@@ -73,7 +73,7 @@
             </tbody>
           </table>
           <!-- 顯示產品種類數量 -->
-          <p>目前有 <span v-text="products.length"></span> 項產品</p>
+          <p>總計 <span v-text="products.length"></span> 項產品</p>
 
           <nav aria-label="Product List Page">
             <ul class="pagination">
@@ -82,7 +82,7 @@
                   <span aria-hidden="true">&laquo;</span>
                 </a>
               </li>
-              <li class="page-item" v-for="num in pageTotalCount" :key="num" :class="getPageStyle(num)" >
+              <li class="page-item" v-for="num in totalPage" :key="num" :class="getPageStyle(num)" >
                 <a class="page-link" href="#" @click.prevent="changeTargetPage(num)"
                   >{{ num }}</a
                 >

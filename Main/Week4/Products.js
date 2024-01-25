@@ -7,7 +7,7 @@ const token = document.cookie.replace(
   /(?:(?:^|.*;\s*)hextoken\s*\=\s*([^;]*).*$)|^.*$/,
   "$1"
 );
-const pageContainerLimit = 3;
+const productCountPerPage = 3;
 let deleteModal = null;
 let productModal = null;
 let detailModal = null;
@@ -33,13 +33,13 @@ createApp({
     this.checkSignIn();
   },
   computed: {
-    productList() {
-      let start = pageContainerLimit * (this.currentPageNum - 1);
+    productsByPage() {
+      let start = productCountPerPage * (this.currentPageNum - 1);
 
-      return this.products.slice(start, start + pageContainerLimit);
+      return this.products.slice(start, start + productCountPerPage);
     },
-    pageTotalCount() {
-      return Math.ceil(this.products.length / pageContainerLimit);
+    totalPage() {
+      return Math.ceil(this.products.length / productCountPerPage);
     },
   },
   methods: {
@@ -153,7 +153,7 @@ createApp({
     editPageNum(num) {
       let result = this.currentPageNum + num;
 
-      result = Math.min(result, this.pageTotalCount);
+      result = Math.min(result, this.totalPage);
       result = Math.max(result, 1);
 
       this.currentPageNum = result;
