@@ -1,5 +1,8 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
-import adminPagination from "./module/adminPagination.js";
+import paginationComponent from "./components/paginationComponent.js";
+import deleteModalComponent from "./components/deleteModalComponent.js";
+import editModalComponent from "./components/editModalComponent.js";
+import productModalComponent from "./components/productModalComponent.js";
 
 const url = "https://ec-course-api.hexschool.io/v2/";
 const path = "mikelin-hexschool";
@@ -8,9 +11,6 @@ const token = document.cookie.replace(
   "$1"
 );
 const productCountPerPage = 3;
-let deleteModal = null;
-let productModal = null;
-let detailModal = null;
 
 axios.defaults.headers.common["Authorization"] = token;
 
@@ -26,10 +26,6 @@ const app = createApp({
     };
   },
   mounted() {
-    deleteModal = new bootstrap.Modal(document.querySelector("#deleteModal"));
-    productModal = new bootstrap.Modal(document.querySelector("#productModal"));
-    detailModal = new bootstrap.Modal(document.querySelector("#detailModal"));
-
     this.checkSignIn();
   },
   computed: {
@@ -73,12 +69,12 @@ const app = createApp({
     getProductDetail(item) {
       this.productDetail = { ...item };
 
-      detailModal.show();
+      this.$refs.productModal.show();
     },
     deleteProduct(item) {
       this.productDetail = { ...item };
 
-      deleteModal.show();
+      this.$refs.delModal.show();
     },
     confirmDelete() {
       axios
@@ -86,7 +82,7 @@ const app = createApp({
         .then((response) => {
           this.getProducts();
 
-          deleteModal.hide();
+          this.$refs.delModal.hide();
         })
         .catch((error) => {
           alert(error.response.data.message);
@@ -101,7 +97,7 @@ const app = createApp({
         this.editResult = { ...item };
       }
 
-      productModal.show();
+      this.$refs.editModal.show();
     },
     confirmEdit() {
       if (this.is_addProduct) {
@@ -118,7 +114,7 @@ const app = createApp({
         .then((response) => {
           this.getProducts();
 
-          productModal.hide();
+          this.$refs.editModal.hide();
         })
         .catch((error) => {
           alert(error.response.data.message);
@@ -132,7 +128,7 @@ const app = createApp({
         .then((response) => {
           this.getProducts();
 
-          productModal.hide();
+          this.$refs.editModal.hide();
         })
         .catch((error) => {
           alert(error.response.data.message);
@@ -148,9 +144,15 @@ const app = createApp({
     getCurrentPageNum(page) {
       this.currentPageNum = page;
     },
+    getNewImageUrl(url) {
+      this.newImageUrl = url;
+    },
   },
   components: {
-    adminPagination,
+    paginationComponent,
+    deleteModalComponent,
+    editModalComponent,
+    productModalComponent,
   },
 });
 
