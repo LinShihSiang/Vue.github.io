@@ -75,25 +75,7 @@
           <!-- 顯示產品種類數量 -->
           <p>總計 <span v-text="products.length"></span> 項產品</p>
 
-          <nav aria-label="Product List Page">
-            <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous" @click.prevent="editPageNum(-1)" >
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li class="page-item" v-for="num in totalPage" :key="num" :class="getPageStyle(num)" >
-                <a class="page-link" href="#" @click.prevent="changeTargetPage(num)"
-                  >{{ num }}</a
-                >
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next" @click.prevent="editPageNum(1)">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
+          <admin-pagination :total-page="totalPage" @get-current-page-num="getCurrentPageNum"></admin-pagination>
         </div>
 
         <div

@@ -1,5 +1,5 @@
-// 產品資料格式
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
+import adminPagination from "./module/adminPagination.js";
 
 const url = "https://ec-course-api.hexschool.io/v2/";
 const path = "mikelin-hexschool";
@@ -14,7 +14,7 @@ let detailModal = null;
 
 axios.defaults.headers.common["Authorization"] = token;
 
-createApp({
+const app = createApp({
   data() {
     return {
       productDetail: {}, // 暫存產品詳細
@@ -145,21 +145,13 @@ createApp({
     deleteImageUrl() {
       this.editResult.imageUrl = null;
     },
-    getPageStyle(page) {
-      return {
-        active: page == this.currentPageNum,
-      };
-    },
-    editPageNum(num) {
-      let result = this.currentPageNum + num;
-
-      result = Math.min(result, this.totalPage);
-      result = Math.max(result, 1);
-
-      this.currentPageNum = result;
-    },
-    changeTargetPage(page) {
+    getCurrentPageNum(page) {
       this.currentPageNum = page;
     },
   },
-}).mount("#app");
+  components: {
+    adminPagination,
+  },
+});
+
+app.mount("#app");
