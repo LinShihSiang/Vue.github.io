@@ -7,19 +7,19 @@ export default {
   },
   props: ["editResult", "insertImageUrl", "deleteImageUrl", "confirmEdit"],
   template: `<div
-    id="productModal"
+    id="editModal"
     ref="modal"
     class="modal fade"
     data-bs-backdrop="static"
     data-bs-keyboard="false"
     tabindex="-1"
-    aria-labelledby="productModalLabel"
+    aria-labelledby="editModalLabel"
     aria-hidden="true"
   >
     <div class="modal-dialog modal-xl">
       <div class="modal-content border-0">
         <div class="modal-header bg-dark text-white">
-          <h5 id="productModalLabel" class="modal-title">
+          <h5 id="editModalLabel" class="modal-title">
             <span>新增產品</span>
           </h5>
           <button
@@ -38,6 +38,7 @@ export default {
                     >輸入圖片網址</label
                   >
                   <input
+                    id="imageUrl"
                     type="text"
                     class="form-control"
                     placeholder="請輸入圖片連結"
@@ -146,7 +147,7 @@ export default {
               <div class="mb-3">
                 <label for="content" class="form-label">說明內容</label>
                 <textarea
-                  id="description"
+                  id="content"
                   type="text"
                   class="form-control"
                   placeholder="請輸入說明內容"

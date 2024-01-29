@@ -6,17 +6,17 @@ export default {
   },
   props: ["productDetail"],
   template: `<div
-    id="detailModal"
+    id="productModal"
     ref="modal"
     class="modal fade"
     tabindex="-1"
-    aria-labelledby="detailModalLabel"
+    aria-labelledby="productModalLabel"
     aria-hidden="true"
   >
     <div class="modal-dialog modal-xl">
       <div class="modal-content border-0">
         <div class="modal-header bg-dark text-white">
-          <h5 id="detailModalLabel" class="modal-title">
+          <h5 id="productModalLabel" class="modal-title">
             <span>產品細節</span>
           </h5>
           <button
