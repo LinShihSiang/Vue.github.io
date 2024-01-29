@@ -77,7 +77,7 @@
 
           <pagination-component 
             :total-page="totalPage" 
-            @get-current-page-num="getCurrentPageNum">
+            @current-page-num="updateCurrentPageNum">
           </pagination-component>
         </div>
 
@@ -92,7 +92,7 @@
           :insert-image-url="insertImageUrl"
           :delete-image-url="deleteImageUrl"
           :confirm-edit="confirmEdit"
-          @new-image-url="getNewImageUrl"
+          @new-image-url="updateNewImageUrl"
           ref="editModal">
         </edit-modal-component>
 

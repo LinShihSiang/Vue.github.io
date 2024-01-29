@@ -7,7 +7,7 @@ export default {
   props: ["productDetail"],
   template: `<div
     id="detailModal"
-    ref="detailModal"
+    ref="modal"
     class="modal fade"
     tabindex="-1"
     aria-labelledby="detailModalLabel"
@@ -75,7 +75,7 @@ export default {
     </div>
   </div>`,
   mounted() {
-    this.modal = new bootstrap.Modal(document.querySelector("#detailModal"));
+    this.modal = new bootstrap.Modal(this.$refs.modal);
   },
   methods: {
     show() {

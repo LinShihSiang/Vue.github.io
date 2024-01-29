@@ -141,10 +141,10 @@ const app = createApp({
     deleteImageUrl() {
       this.editResult.imageUrl = null;
     },
-    getCurrentPageNum(page) {
+    updateCurrentPageNum(page) {
       this.currentPageNum = page;
     },
-    getNewImageUrl(url) {
+    updateNewImageUrl(url) {
       this.newImageUrl = url;
     },
   },

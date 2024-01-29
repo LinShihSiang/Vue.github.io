@@ -8,6 +8,7 @@ export default {
   template: `<div
     class="modal fade"
     id="deleteModal"
+    ref="modal"
     tabindex="-1"
     aria-labelledby="deleteModalLabel"
     aria-hidden="true"
@@ -49,7 +50,7 @@ export default {
     </div>
   </div>`,
   mounted() {
-    this.modal = new bootstrap.Modal(document.querySelector("#deleteModal"));
+    this.modal = new bootstrap.Modal(this.$refs.modal);
   },
   methods: {
     show() {

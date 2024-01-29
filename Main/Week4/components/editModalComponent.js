@@ -8,7 +8,7 @@ export default {
   props: ["editResult", "insertImageUrl", "deleteImageUrl", "confirmEdit"],
   template: `<div
     id="productModal"
-    ref="productModal"
+    ref="modal"
     class="modal fade"
     data-bs-backdrop="static"
     data-bs-keyboard="false"
@@ -192,7 +192,7 @@ export default {
     </div>
   </div>`,
   mounted() {
-    this.modal = new bootstrap.Modal(document.querySelector("#productModal"));
+    this.modal = new bootstrap.Modal(this.$refs.modal);
   },
   methods: {
     show() {
@@ -203,8 +203,8 @@ export default {
     },
   },
   watch: {
-    newImageUrl(newValue, oldValue) {
-      this.$emit("new-image-url", newValue);
+    newImageUrl() {
+      this.$emit("new-image-url", this.newImageUrl);
     },
   },
 };

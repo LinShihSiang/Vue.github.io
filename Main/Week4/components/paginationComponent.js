@@ -40,12 +40,12 @@ export default {
 
       this.currentPageNum = result;
 
-      this.$emit("get-current-page-num", this.currentPageNum);
+      this.$emit("current-page-num", this.currentPageNum);
     },
     changeTargetPage(page) {
       this.currentPageNum = page;
 
-      this.$emit("get-current-page-num", this.currentPageNum);
+      this.$emit("current-page-num", this.currentPageNum);
     },
   },
 };
