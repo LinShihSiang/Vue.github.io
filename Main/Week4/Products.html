@@ -22,7 +22,7 @@
       <div class="row py-3">
         <div class="col">
           <div class="text-end mt-4">
-            <button class="btn btn-primary" @click="editProduct()">
+            <button class="btn btn-primary" @click.prevent="editProduct()">
               建立新的產品
             </button>
           </div>
@@ -40,7 +40,7 @@
               <!-- 從 products 產生產品清單，唯一值(key)=id -->
               <tr v-for="item in productsByPage" :key="item.id">
                 <td width="150">
-                  <a href="#" @click="getProductDetail(item)"
+                  <a href="#" @click.prevent="getProductDetail(item)"
                     >{{ item.title }}</a
                   >
                 </td>
@@ -57,14 +57,14 @@
                   <button
                     type="button"
                     class="btn btn-outline-primary btn-sm"
-                    @click="editProduct(item)"
+                    @click.prevent="editProduct(item)"
                   >
                     編輯
                   </button>
                   <button
                     type="button"
                     class="btn btn-outline-danger btn-sm"
-                    @click="deleteProduct(item)"
+                    @click.prevent="deleteProduct(item)"
                   >
                     刪除
                   </button>
