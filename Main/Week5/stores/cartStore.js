@@ -6,6 +6,7 @@ export default defineStore("cartStore", {
   state: () => ({
     carts: [],
     toggle: false,
+    cartLoadingState: false,
   }),
   getters: {
     sortCarts: ({ carts }) => {
@@ -22,9 +23,13 @@ export default defineStore("cartStore", {
       this.toggle = !this.toggle;
     },
     getCarts() {
+      this.cartLoadingState = true;
+
       axios
         .get(`${apiUrl}/api/${apiPath}/cart`)
         .then((response) => {
+          this.cartLoadingState = false;
+
           if (response.data.data.carts == null) {
             this.carts = [];
             return;
@@ -33,6 +38,7 @@ export default defineStore("cartStore", {
           this.carts = response.data.data.carts;
         })
         .catch((error) => {
+          this.cartLoadingState = false;
           alert(error.response.data.message);
         });
     },
@@ -48,6 +54,8 @@ export default defineStore("cartStore", {
       }
     },
     addCart(product, count = 1) {
+      this.cartLoadingState = true;
+
       axios
         .post(`${apiUrl}/api/${apiPath}/cart`, {
           data: {
@@ -56,14 +64,18 @@ export default defineStore("cartStore", {
           },
         })
         .then((response) => {
+          this.cartLoadingState = false;
           alert(response.data.message);
           this.getCarts();
         })
         .catch((error) => {
+          this.cartLoadingState = false;
           alert(error.response.data.message);
         });
     },
     updateCart(data) {
+      this.cartLoadingState = true;
+
       axios
         .put(`${apiUrl}/api/${apiPath}/cart/${data.id}`, {
           data: {
@@ -72,32 +84,42 @@ export default defineStore("cartStore", {
           },
         })
         .then((response) => {
+          this.cartLoadingState = false;
           alert(response.data.message);
           this.getCarts();
         })
         .catch((error) => {
+          this.cartLoadingState = false;
           alert(error.response.data.message);
         });
     },
     removeAllCart() {
+      this.cartLoadingState = true;
+
       axios
         .delete(`${apiUrl}/api/${apiPath}/carts`)
         .then((response) => {
+          this.cartLoadingState = false;
           alert(response.data.message);
           this.getCarts();
         })
         .catch((error) => {
+          this.cartLoadingState = false;
           alert(error.response.data.message);
         });
     },
     removeCart(id) {
+      this.cartLoadingState = true;
+
       axios
         .delete(`${apiUrl}/api/${apiPath}/cart/${id}`)
         .then((response) => {
+          this.cartLoadingState = false;
           alert(response.data.message);
           this.getCarts();
         })
         .catch((err) => {
+          this.cartLoadingState = false;
           alert(err.response.data.message);
         });
     },

@@ -9,17 +9,21 @@
       integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0"
       crossorigin="anonymous"
     />
+    <link
+      href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@6/dist/css/index.css"
+      rel="stylesheet"
+    />
+
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
-
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-demi/0.14.6/index.iife.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pinia/2.1.7/pinia.iife.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@6"></script>
   </head>
 
   <div id="app" class="container">
@@ -29,10 +33,10 @@
       @product-detail="showProductDetail"
     ></Product-List-Component>
 
-    <product-modal-component 
-    :product-detail="productDetail" 
-    ref="productModal">
+    <product-modal-component :product-detail="productDetail" ref="productModal">
     </product-modal-component>
+
+    <loading :active="isLoading"/>
   </div>
 </html>
 
@@ -43,12 +47,13 @@
     object-fit: cover;
   }
 
-  .product-list-img, .product-detail-imgs{
+  .product-list-img,
+  .product-detail-imgs {
     height: 200px;
     object-fit: cover;
   }
 
-  .product-detail-img{
+  .product-detail-img {
     height: 200px;
     width: 200px;
     object-fit: cover;
@@ -64,7 +69,7 @@
   import cartStore from "./stores/cartStore.js";
 
   const { createApp } = Vue;
-  const { createPinia, mapState, mapActions } = Pinia;
+  const { createPinia, mapState } = Pinia;
 
   const app = createApp({
     data() {
@@ -78,6 +83,14 @@
 
         this.$refs.productModal.show();
       },
+
+    },
+    computed:{
+      isLoading() {
+        return this.productLoadingState || this.cartLoadingState;
+      },
+      ...mapState(productStore, ["productLoadingState"]),
+      ...mapState(cartStore, ["cartLoadingState"]),
     },
     components: {
       NavBarComponent,
@@ -86,6 +99,8 @@
       ProductModalComponent,
     },
   });
+
+  app.component('loading', VueLoading.Component)
 
   const pinia = createPinia();
 

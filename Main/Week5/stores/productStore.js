@@ -5,6 +5,7 @@ const apiPath = "mikelin-hexschool";
 export default defineStore("productStore", {
   state: () => ({
     products: [],
+    productLoadingState: false,
   }),
   getters: {
     sortProducts: ({ products }) => {
@@ -15,9 +16,13 @@ export default defineStore("productStore", {
   },
   actions: {
     getProducts() {
+      this.productLoadingState = true;
+
       axios
         .get(`${apiUrl}/api/${apiPath}/products/all`)
         .then((response) => {
+          this.productLoadingState = false;
+
           if (response.data.products == null) {
             this.products = [];
             return;
@@ -26,6 +31,8 @@ export default defineStore("productStore", {
           this.products = Object.values(response.data.products);
         })
         .catch((error) => {
+          this.productLoadingState = false;
+
           alert(error.response.data.message);
         });
     },
