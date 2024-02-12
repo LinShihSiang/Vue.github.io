@@ -9,7 +9,7 @@ export default {
       <div class="card" style="width: 18rem">
         <img
           :src="item.imageUrl"
-          class="card-img-top"
+          class="card-img-top product-list-img"
           alt="產品圖片"
         />
         <div class="card-body">
@@ -17,7 +17,7 @@ export default {
           {{ item.title }} 
           <span class="float-end">$ {{ item.price }}</span>
           </h5>
-          <button type="button" class="btn btn-outline-primary">
+          <button type="button" class="btn btn-outline-primary" @click.prevent="showProductDetail(item)">
             產品詳細
           </button>
           <button type="button" class="btn btn-outline-success" @click.prevent="editCart(item)">
@@ -34,6 +34,9 @@ export default {
     ...mapState(productStore, ["sortProducts"]),
   },
   methods: {
+    showProductDetail(product) {
+      this.$emit("product-detail", product);
+    },
     ...mapActions(productStore, ["getProducts"]),
     ...mapActions(cartStore, ["editCart"]),
   },

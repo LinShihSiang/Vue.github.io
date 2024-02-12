@@ -25,9 +25,15 @@
   <div id="app" class="container">
     <Nav-Bar-Component></Nav-Bar-Component>
     <Cart-Component></Cart-Component>
-    <Product-List-Component></Product-List-Component>
-  </div>
+    <Product-List-Component
+      @product-detail="showProductDetail"
+    ></Product-List-Component>
 
+    <product-modal-component 
+    :product-detail="productDetail" 
+    ref="productModal">
+    </product-modal-component>
+  </div>
 </html>
 
 <style>
@@ -37,8 +43,14 @@
     object-fit: cover;
   }
 
-  .card-img-top {
+  .product-list-img, .product-detail-imgs{
     height: 200px;
+    object-fit: cover;
+  }
+
+  .product-detail-img{
+    height: 200px;
+    width: 200px;
     object-fit: cover;
   }
 </style>
@@ -47,6 +59,7 @@
   import NavBarComponent from "./components/navBarComponent.js";
   import CartComponent from "./components/cartComponent.js";
   import ProductListComponent from "./components/productListComponent.js";
+  import ProductModalComponent from "./components/productModalComponent.js";
   import productStore from "./stores/productStore.js";
   import cartStore from "./stores/cartStore.js";
 
@@ -54,10 +67,23 @@
   const { createPinia, mapState, mapActions } = Pinia;
 
   const app = createApp({
+    data() {
+      return {
+        productDetail: {},
+      };
+    },
+    methods: {
+      showProductDetail(product) {
+        this.productDetail = product;
+
+        this.$refs.productModal.show();
+      },
+    },
     components: {
       NavBarComponent,
       CartComponent,
       ProductListComponent,
+      ProductModalComponent,
     },
   });
 
