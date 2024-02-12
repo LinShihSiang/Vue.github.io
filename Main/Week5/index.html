@@ -29,6 +29,26 @@
     <script src="https://cdn.jsdelivr.net/npm/@vee-validate/i18n@4.12.4/dist/vee-validate-i18n.min.js"></script>
   </head>
 
+  <style>
+    .img-product {
+      height: 100px;
+      width: 100px;
+      object-fit: cover;
+    }
+  
+    .product-list-img,
+    .product-detail-imgs {
+      height: 200px;
+      object-fit: cover;
+    }
+  
+    .product-detail-img {
+      height: 200px;
+      width: 200px;
+      object-fit: cover;
+    }
+  </style>
+
   <div id="app" class="container">
     <Nav-Bar-Component></Nav-Bar-Component>
     <Cart-Component></Cart-Component>
@@ -40,94 +60,7 @@
     </product-modal-component>
     <loading :active="isLoading" />
   </div>
+
+  <script src="./index.js" type="module"></script>
 </html>
 
-<style>
-  .img-product {
-    height: 100px;
-    width: 100px;
-    object-fit: cover;
-  }
-
-  .product-list-img,
-  .product-detail-imgs {
-    height: 200px;
-    object-fit: cover;
-  }
-
-  .product-detail-img {
-    height: 200px;
-    width: 200px;
-    object-fit: cover;
-  }
-</style>
-
-<script type="module">
-  import NavBarComponent from "./components/navBarComponent.js";
-  import CartComponent from "./components/cartComponent.js";
-  import ProductListComponent from "./components/productListComponent.js";
-  import ProductModalComponent from "./components/productModalComponent.js";
-  import OrderComponent from "./components/orderComponent.js"
-  import productStore from "./stores/productStore.js";
-  import cartStore from "./stores/cartStore.js";
-  import orderStore from "./stores/orderStore.js";
-
-  const { createApp } = Vue;
-  const { createPinia, mapState } = Pinia;
-  const { defineRule, Form, Field, ErrorMessage, configure } = VeeValidate;
-  const { required, email, min, max } = VeeValidateRules;
-  const { localize, loadLocaleFromURL } = VeeValidateI18n;
-
-  defineRule("required", required);
-  defineRule("email", email);
-  defineRule("min", min);
-  defineRule("max", max);
-
-  loadLocaleFromURL(
-    "https://unpkg.com/@vee-validate/i18n@4.1.0/dist/locale/zh_TW.json"
-  );
-
-  configure({
-    generateMessage: localize("zh_TW"),
-  });
-
-  const app = createApp({
-    data() {
-      return {
-        productDetail: {},
-      };
-    },
-    methods: {
-      showProductDetail(product) {
-        this.productDetail = product;
-
-        this.$refs.productModal.show();
-      },
-    },
-    computed: {
-      isLoading() {
-        return this.productLoadingState || this.cartLoadingState || this.orderLoadingState;
-      },
-      ...mapState(productStore, ["productLoadingState"]),
-      ...mapState(cartStore, ["cartLoadingState"]),
-      ...mapState(orderStore, ["orderLoadingState"]),
-    },
-    components: {
-      NavBarComponent,
-      CartComponent,
-      ProductListComponent,
-      ProductModalComponent,
-      OrderComponent
-    },
-  });
-
-  app.component("loading", VueLoading.Component);
-  app.component("VForm", VeeValidate.Form);
-  app.component("VField", VeeValidate.Field);
-  app.component("ErrorMessage", VeeValidate.ErrorMessage);
-
-  const pinia = createPinia();
-
-  app.use(pinia);
-  app.mount("#app");
-</script>
