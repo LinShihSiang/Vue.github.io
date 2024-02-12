@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>產品列表</title>
+    <meta charset="UTF-8" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-demi/0.14.6/index.iife.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pinia/2.1.7/pinia.iife.js"></script>
+  </head>
+
+  <div id="app" class="container">
+    <Nav-Bar-Component></Nav-Bar-Component>
+    <Cart-Component></Cart-Component>
+    <Product-List-Component></Product-List-Component>
+  </div>
+
+</html>
+
+<style>
+  .img-product {
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+  }
+
+  .card-img-top {
+    height: 200px;
+    object-fit: cover;
+  }
+</style>
+
+<script type="module">
+  import NavBarComponent from "./components/navBarComponent.js";
+  import CartComponent from "./components/cartComponent.js";
+  import ProductListComponent from "./components/productListComponent.js";
+  import productStore from "./stores/productStore.js";
+  import cartStore from "./stores/cartStore.js";
+
+  const { createApp } = Vue;
+  const { createPinia, mapState, mapActions } = Pinia;
+
+  const app = createApp({
+    components: {
+      NavBarComponent,
+      CartComponent,
+      ProductListComponent,
+    },
+  });
+
+  const pinia = createPinia();
+
+  app.use(pinia);
+  app.mount("#app");
+</script>
